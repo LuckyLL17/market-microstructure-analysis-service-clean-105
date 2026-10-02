@@ -21,6 +21,7 @@ export type MarketEvent = {
 export type PriceLevel = { price: number; quantity: number };
 export type BookOrder = { id: string; side: Side; price: number; quantity: number; remaining: number; sequence: number; owner?: string; type?: OrderType };
 export type Fill = { orderId: string; symbol: string; side: Side; price: number; quantity: number; timestamp: string; liquidity: 'maker' | 'taker'; fee: number; strategyId?: string };
+export type ImpactCostPoint = { quantity: number; averagePrice: number | null; slippageBps: number | null; filled: number };
 export type Analytics = {
   symbol: string;
   timestamp: string;
@@ -33,9 +34,24 @@ export type Analytics = {
   askDepth: number;
   imbalance: number;
   weightedImbalance: number;
-  marketBuyImpact: Array<{ quantity: number; averagePrice: number | null; slippageBps: number | null; filled: number }>;
-  marketSellImpact: Array<{ quantity: number; averagePrice: number | null; slippageBps: number | null; filled: number }>;
+  marketBuyImpact: ImpactCostPoint[];
+  marketSellImpact: ImpactCostPoint[];
   estimatedFillProbability: { buy: number; sell: number };
   liquidityScore: number;
+};
+export type ImpactCostDeltaPoint = { quantity: number; averagePrice: number | null; slippageBps: number | null; filled: number; averagePriceChange: number | null; slippageBpsChange: number | null; filledChange: number };
+export type MetricsDelta = {
+  bestBidChange: number | null;
+  bestAskChange: number | null;
+  midPriceChange: number | null;
+  spreadChange: number | null;
+  relativeSpreadChange: number | null;
+  bidDepthChange: number;
+  askDepthChange: number;
+  imbalanceChange: number;
+  weightedImbalanceChange: number;
+  marketBuyImpactChange: ImpactCostDeltaPoint[];
+  marketSellImpactChange: ImpactCostDeltaPoint[];
+  liquidityScoreChange: number;
 };
 export type RiskDecision = { allowed: boolean; code?: string; message?: string; rule?: string };
